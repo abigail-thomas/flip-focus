@@ -1,0 +1,62 @@
+
+@import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+@theme {
+    --primary: #5b5a76;
+    --accent: #d95242;
+    --secondary: #fcba63;
+    --bg: #F8F8F8;
+    --gray:  rgb(243, 239, 239);
+}
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+
+/* overriding some bootstrap stuff */
+.container, footer {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/*wont work in layout */
+.btn {
+    font-family: 'Roboto Condensed';
+    @apply uppercase w-fit h-fit !text-[#F8F8F8] p-4 rounded-xl font-bold
+        bg-gradient-to-r from-[var(--accent)] to-[var(--accent)]/70  shadow-lg
+        hover:from-[var(--secondary)] hover:to-[var(--secondary)]/70
+        transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl;
+}
+
+    
+    @media screen and (max-width: 900px) {
+
+        /* hamburger toggle stuff at this breakpoiunt*/
+        .hamburger {
+            display: flex;
+            padding-right: 10px;
+        }
+
+        .right-buttons, .search, .search-bar{
+            display: none;
+
+        }
+
+        .right-buttons.active{
+            right: 0;
+            top: 72px;
+            @apply
+                absolute flex flex-row justify-center text-center
+                w-full gap-8 p-10
+                bg-gradient-to-tr from-[var(--primary)] to-[var(--primary)]/70  shadow-lg
+        }
+
+    }
+
+
+
