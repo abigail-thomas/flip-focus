@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="flex items-center gap-1 text-[var(--primary)]/70">
                                     <i class="bi bi-star-fill text-[var(--secondary)]/60"></i>
-                                    <span class="text-sm font-medium">0.0</span>
+                                    <span class="text-sm font-medium">{{ $set['num_saved']}} saves</span>
                                 </div>
                             </div>
                         </div>

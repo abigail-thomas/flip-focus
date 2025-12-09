@@ -112,7 +112,7 @@
                 <!-- saved sets /-->
                 @if ($savedSets->count() > 0)
 
-                    <div class="mt-10 mb-4 inline-flex items-center justify-center w-18 h-18 bg-gradient-to-r from-[var(--accent)] to-[var(--accent)]/70 rounded-full shadow-md mx-auto">
+                    <div class="mt-10 mb-4 inline-flex items-center justify-center w-18 h-18 bg-gradient-to-r from-[#d95242] to-[#d95242]/70 rounded-full shadow-md mx-auto">
                         <i class="bi bi-heart-fill text-white text-3xl"></i>
                     </div>
                     <h2 class="mb-2 pb-8 text-2xl lg:text-4xl font-bold text-[var(--primary)] text-center"
@@ -158,7 +158,7 @@
                             </div>
                             <div class="flex items-center gap-1 text-[var(--primary)]/70">
                                 <i class="bi bi-star-fill text-[var(--secondary)]/60"></i>
-                                <span class="text-sm font-medium">0.0</span>
+                                <span class="text-sm font-medium">{{ $set['num_saved']}} saves</span>
                             </div>
                         </div>
 
