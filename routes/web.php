@@ -18,12 +18,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/study', [StudySetController::class, 'store'])->name('study.store');
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
-    Route::post('/study/{studySet}/saveSet', [StudySetController::class, 'saveSet'])->name('study.saveSet');
+    Route::post('/study/{set}/saveSet', [StudySetController::class, 'saveSet'])->name('study.saveSet');
 });
 
 Route::get('/study/browse', [StudySetController::class, 'browse'])->name('study.browse');
 Route::get('/study/search', [StudySetController::class, 'search'])->name('search');
-
+Route::get('/study/edit/{set}', [StudySetController::class, 'edit'])->name('edit');
+Route::put('/study/update', [StudySetController::class, 'update'])->name('update');
 Route::get('/study/{studySet}', [StudySetController::class, 'show'])->name('study.show');
 // incrementing thre number of studies
 Route::post('/study/{studySet}/increment', [StudySetController::class, 'incrementNumStudies'])->name('study.increment');

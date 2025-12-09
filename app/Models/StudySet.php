@@ -10,7 +10,7 @@ class StudySet extends Model
     /** @use HasFactory<\Database\Factories\StudySetFactory> */
     use HasFactory;
 
-    protected $fillable = ['title', 'subject', 'description', 'user_id', 'author', 'num_studies'];
+    protected $fillable = ['title', 'subject', 'description', 'user_id', 'author', 'num_studies', 'num_saved'];
 
     public function flashcards() {
         return $this->hasMany(Flashcard::class);
@@ -21,7 +21,7 @@ class StudySet extends Model
     }
 
     public function savedByUsers() {
-        return $this->belongsToMany(User::class, 'saved_study_set');
+        return $this->belongsToMany(User::class, 'saved_study_set')->withTimestamps();
     }
 
 }

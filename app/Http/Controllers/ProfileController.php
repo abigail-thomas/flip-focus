@@ -14,14 +14,15 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $sets = StudySet::orderBy('title')->paginate(3); // i think i wanna order by rating eventually 
-        // return view('components.index.featuredcards', ['sets' => $sets]);
         $user = Auth::user();
-        $studySets = $user->studySets;
 
+        $studySets = $user->studySets()->orderBy('title')->get(); // i think i wanna order by rating eventually 
+        // return view('components.index.featuredcards', ['sets' => $sets]);
+        $savedSets = $user->savedSets()->orderBy('title')->get();
         return view('profile', [
             'user' => $user,
             'studySets' => $studySets,
+            'savedSets' => $savedSets,
         ]);
     }
 

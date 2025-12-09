@@ -51,6 +51,6 @@ class User extends Authenticatable
     }
 
     public function savedSets() {
-        return $this->belongsToMany(StudySet::class, 'saved_study_set');
+        return $this->belongsToMany(StudySet::class, 'saved_study_set', 'user_id', 'study_set_id')->withTimestamps();
     }
 }

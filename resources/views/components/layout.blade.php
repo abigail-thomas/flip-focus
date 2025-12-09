@@ -104,10 +104,9 @@
                 @endguest
 
                 @auth
-                    <a href="/study/create" class="btn">Create <i class="bi bi-plus"></i></a>
+                    <a href="/study/create" class="btn">Create</a>
                     <a href="{{ route('study.browse') }}" class="btn ">
-                    <i class="bi bi-search pr-1"></i>
-                    <span>Browse All</span>
+                    <span>Browse</span>
                 </a>
                     <div class="flex align-center mt-1">
                         <a href="/profile"

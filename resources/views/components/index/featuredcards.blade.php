@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="flex items-center gap-1 text-[var(--primary)]/70">
                                     <i class="bi bi-star-fill text-[var(--secondary)]/60"></i>
-                                    <span class="text-sm font-medium">0.0</span>
+                                    <span class="text-sm font-medium">{{ $set['num_saved']}} saves</span>
                                 </div>
                             </div>
 
@@ -71,7 +71,12 @@
         
         <!-- broswe arrow /-->
         <div class="mt-20 animate-bounce">
-            <a href="{{ route('study.browse') }}">
+            @auth
+                <a href="{{ route('study.browse') }}">
+            @endauth
+            @guest
+                <a href="{{ route('register') }}">
+            @endguest
             <p class="text-lg font-bold text-[var(--primary)]/80 ">Browse All</p>
             <i class=" pt-4 text-3xl font-bold bi bi-arrow-down text-[var(--primary)]/80 "></i>
         </a>

@@ -16,7 +16,7 @@
                         hx-get="{{ route('search') }}"
                         hx-trigger="keyup changed delay:300ms"
                         hx-target="#study-sets"
-                        hx-swap="innerHTML"
+                        hx-swap="outerHTML"
                         >
                 </div>
             

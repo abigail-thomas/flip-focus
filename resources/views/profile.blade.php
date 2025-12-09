@@ -44,69 +44,132 @@
             <!-- card 1-->
 
                 @foreach($studySets as $set)
+
+                <div
+                class="bg-white rounded-2xl
+                p-6 shadow-md hover:shadow-lg
+                transition-all duration-300 ease-in-out transform hover:translate-x-1 hover:scale-105
+                text-[var(--primary)]
+                border-none text-left relative
+                ">
                     
+                <!--if your set, you can delete /-->
+                @if ($set->user_id === auth()->id())
+                <form
+                    action="{{ route('set.destroy', ['studySet' => $set->id]) }}"
+                    method="POST"
+                    class="absolute top-4 right-4 z-20 p-2 hover:bg-[var(--accent)]/30 rounded-xl"
+                    onsubmit="return confirm('Are you sure you want to delete this set?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="focus:outline-none">
+                        <i class="bi bi-trash text-[var(--accent)] text-lg"></i>
+                    </button>
+                </form>
+                @endif
+                
+                <a href="{{ route('study.show', ['studySet' =>$set->id]) }}" class="stretched-link">
+                <div class="flex items-start justify-between mb-4 group-hover:text-[#d95242] ">
+                    <div class="flex-1">
+                        <h3 class="font-bold text-2xl mb-2  text-[var(--secondary)]/80">{{ $set['title'] }}</h3>
 
-                        <div
-                        class="bg-white rounded-2xl
-                        p-6 shadow-md hover:shadow-lg
-                        transition-all duration-300 ease-in-out transform hover:translate-x-1 hover:scale-105
-                        text-[var(--primary)]
-                        border-none text-left relative
-                        ">
-                            
-                        <form
-                            action="{{ route('set.destroy', ['studySet' => $set->id]) }}"
-                            method="POST"
-                            class="absolute top-4 right-4 z-20 p-2 hover:bg-[var(--accent)]/30 rounded-xl"
-                            onsubmit="return confirm('Are you sure you want to delete this set?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="focus:outline-none">
-                                <i class="bi bi-trash text-[var(--accent)] text-lg"></i>
-                            </button>
-                        </form>
+                        <div class="card-content">
+                            @if ($set->user)
+                                <p class="text-sm mb-1 text-[var(--primary)]/60 flex items-center gap-1">
+                                    <i class="bi bi-person-circle"></i>
+                                    <span>{{ $set->user->name }}</span>
+                                </p>
+                            @endif
+                        </div>
                         
-                        <a href="{{ route('study.show', ['studySet' =>$set->id]) }}" class="stretched-link">
-                        <div class="flex items-start justify-between mb-4 group-hover:text-[#d95242] ">
-                            <div class="flex-1">
-                                <h3 class="font-bold text-2xl mb-2  text-[var(--secondary)]/80">{{ $set['title'] }}</h3>
-
-                                <div class="card-content">
-                                    @if ($set->user)
-                                        <p class="text-sm mb-1 text-[var(--primary)]/60 flex items-center gap-1">
-                                            <i class="bi bi-person-circle"></i>
-                                            <span>{{ $set->user->name }}</span>
-                                        </p>
-                                    @endif
-                                </div>
-                                
-                                <p class="text-[var(--primary)]/80 mb-2 min-h-10">{{ $set['description'] }}</p>
-                                <hr class="my-3 border-[var(--primary)]/20 mb-4"/>
-                                
-                                
-                                <div class="flex items-center justify-between px-2">
-                                    <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                        <i class="bi bi-layers-fill text-[#d95242]/70"></i>
-                                        <span class="text-sm font-medium">{{ $set->flashcards->count() }} cards</span>
-                                    </div>
-                                    <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                        <i class="bi bi-bookmark-check-fill text-[var(--primary)]/80"></i>
-                                        <span class="text-sm font-medium">{{ $set['num_studies'] }} studies</span>
-                                    </div>
-                                    <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                        <i class="bi bi-star-fill text-[var(--secondary)]/60"></i>
-                                        <span class="text-sm font-medium">0.0</span>
-                                    </div>
-                                </div>
-
+                        <p class="text-[var(--primary)]/80 mb-2 min-h-10">{{ $set['description'] }}</p>
+                        <hr class="my-3 border-[var(--primary)]/20 mb-4"/>
+                        
+                        
+                        <div class="flex items-center justify-between px-2">
+                            <div class="flex items-center gap-1 text-[var(--primary)]/70">
+                                <i class="bi bi-layers-fill text-[#d95242]/70"></i>
+                                <span class="text-sm font-medium">{{ $set->flashcards->count() }} cards</span>
+                            </div>
+                            <div class="flex items-center gap-1 text-[var(--primary)]/70">
+                                <i class="bi bi-bookmark-check-fill text-[var(--primary)]/80"></i>
+                                <span class="text-sm font-medium">{{ $set['num_studies'] }} studies</span>
+                            </div>
+                            <div class="flex items-center gap-1 text-[var(--primary)]/70">
+                                <i class="bi bi-star-fill text-[var(--secondary)]/60"></i>
+                                <span class="text-sm font-medium">0.0</span>
                             </div>
                         </div>
-                          </a>  
-                    </div>
-                    
-                @endforeach
 
+                    </div>
+                </div>
+                    </a> 
+                </div>
+                
+                @endforeach
         </div>
+        
+                <!-- saved sets /-->
+                @if ($savedSets->count() > 0)
+
+                    <div class="mt-10 mb-4 inline-flex items-center justify-center w-18 h-18 bg-gradient-to-r from-[var(--accent)] to-[var(--accent)]/70 rounded-full shadow-md mx-auto">
+                        <i class="bi bi-heart-fill text-white text-3xl"></i>
+                    </div>
+                    <h2 class="mb-2 pb-8 text-2xl lg:text-4xl font-bold text-[var(--primary)] text-center"
+                        >Your Saved Sets </h2>
+                <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    @foreach($savedSets as $set)
+
+                <div
+                class="bg-white rounded-2xl
+                p-6 shadow-md hover:shadow-lg
+                transition-all duration-300 ease-in-out transform hover:translate-x-1 hover:scale-105
+                text-[var(--primary)]
+                border-none text-left relative
+                ">
+
+                <a href="{{ route('study.show', ['studySet' =>$set->id]) }}" class="stretched-link">
+                <div class="flex items-start justify-between mb-4 group-hover:text-[#d95242] ">
+                    <div class="flex-1">
+                        <h3 class="font-bold text-2xl mb-2  text-[var(--secondary)]/80">{{ $set['title'] }}</h3>
+
+                        <div class="card-content">
+                            @if ($set->user)
+                                <p class="text-sm mb-1 text-[var(--primary)]/60 flex items-center gap-1">
+                                    <i class="bi bi-person-circle"></i>
+                                    <span>{{ $set->user->name }}</span>
+                                </p>
+                            @endif
+                        </div>
+                        
+                        <p class="text-[var(--primary)]/80 mb-2 min-h-10">{{ $set['description'] }}</p>
+                        <hr class="my-3 border-[var(--primary)]/20 mb-4"/>
+                        
+                        
+                        <div class="flex items-center justify-between px-2">
+                            <div class="flex items-center gap-1 text-[var(--primary)]/70">
+                                <i class="bi bi-layers-fill text-[#d95242]/70"></i>
+                                <span class="text-sm font-medium">{{ $set->flashcards->count() }} cards</span>
+                            </div>
+                            <div class="flex items-center gap-1 text-[var(--primary)]/70">
+                                <i class="bi bi-bookmark-check-fill text-[var(--primary)]/80"></i>
+                                <span class="text-sm font-medium">{{ $set['num_studies'] }} studies</span>
+                            </div>
+                            <div class="flex items-center gap-1 text-[var(--primary)]/70">
+                                <i class="bi bi-star-fill text-[var(--secondary)]/60"></i>
+                                <span class="text-sm font-medium">0.0</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                    </a> 
+                </div>
+                
+                @endforeach
+                </div>
+                @endif
 
         <!-- no study sets yet /-->
         @else

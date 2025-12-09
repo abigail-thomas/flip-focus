@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Factories;
+use App\Models\User;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,5 +20,9 @@ class StudySetFactory extends Factory
         return [
             //
         ];
+    }
+
+    public function savedByUsers() {
+        return $this->belongsToMany(User::class, 'saved_study_set', 'study_set_id', 'user_id');
     }
 }

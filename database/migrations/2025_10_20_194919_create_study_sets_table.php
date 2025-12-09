@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('author');
             $table->integer('num_studies')->default(0);
+            $table->integer('num_saved')->default(0);
         });
     }
 

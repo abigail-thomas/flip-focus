@@ -71,61 +71,62 @@
             <!-- Right Side - Illustration/Image -->
             <div class="relative">
                 <div class="absolute inset-0 bg-gradient-to-br from-[#d95242]/10 to-[#fcba63]/10 rounded-3xl blur-3xl"></div>
-                <div class="relative bg-white rounded-3xl p-12 shadow-2xl">
-                    <div class="border-l-4 text-[var(--accent)]/80 mb-4 pb-2">
-                        <h3 class="text-md text-left font-semibold pl-2">Day 1</h3>
-                        <p class="text-sm text-left font-semibold pl-2">
-                            Initials learning: After studying, create flashcards or notes.
-                        </p>
-                    </div>
-                    <div class="border-l-4 text-[var(--secondary)]/80 mb-4 pb-2">
-                        <h3 class="text-md text-left font-semibold pl-2">Day 2</h3>
-                        <p class="text-sm text-left font-semibold pl-2">
-                            First review: Use active recall to test yourself on the material without looking at notes.
-                        </p>
-                    </div>
-                    <div class="border-l-4 text-[var(--primary)]/80 mb-4 pb-2">
-                        <h3 class="text-md text-left font-semibold pl-2">Day 4</h3>
-                        <p class="text-sm text-left font-semibold pl-2">
-                            Second review: Test yourself again, focusing on anything you found challenging during the first review.
-                    </div>
-                    <div class="border-l-4 text-[var(--accent)]/80 mb-4 pb-2">
-                        <h3 class="text-md text-left font-semibold pl-2">Day 8</h3>
-                        <p class="text-sm text-left font-semibold pl-2">
-                            Third review: Revisit the material to strengthen your memory.
-                        </p>
-                    </div>
-                    <div class="border-l-4 text-[var(--secondary)]/80 mb-4 pb-2">
-                        <h3 class="text-md text-left font-semibold pl-2">Day 15</h3>
-                        <p class="text-sm text-left font-semibold pl-2">
-                            Fourth review: Review the information again, and use this session to identify and solidify remaining weak points.
-                        </p>
-                    </div>
-                    <div class="border-l-4 text-[var(--primary)]/80">
-                        <h3 class="text-md text-left font-semibold pl-2">Day 30</h3>
-                        <p class="text-sm text-left font-semibold pl-2">
-                            Fifth review: Conduct another review to continue strengthening your memory.
-                        </p>
-                    </div>
-            </div>
-
-            
-        </div>
-<!-- facts /-->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6 font-bold" >
-                    <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow">
-                        <div class="text-4xl font-bold text-[var(--secondary)]/80 mb-2">85%</div>
-                        <div class="text-[#5b5a76]">Better Recall</div>
-                    </div>
-                    <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow">
-                        <div class="text-4xl font-bold text-[var(--secondary)]/80  mb-2">50%</div>
-                        <div class="text-[#5b5a76]">Less Time</div>
-                    </div>
-                    <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow">
-                        <div class="text-4xl font-bold text-[var(--secondary)]/80  mb-2">200%</div>
-                        <div class="text-[#5b5a76]">Better Long-Term Memory</div>
+                    <div class="relative bg-white rounded-3xl p-12 shadow-2xl">
+                        <div class="border-l-4 text-[var(--accent)]/80 mb-4 pb-2">
+                            <h3 class="text-md text-left font-semibold pl-2">Day 1</h3>
+                            <p class="text-sm text-left font-semibold pl-2">
+                                Initials learning: After studying, create flashcards or notes.
+                            </p>
+                        </div>
+                        <div class="border-l-4 text-[var(--secondary)]/80 mb-4 pb-2">
+                            <h3 class="text-md text-left font-semibold pl-2">Day 2</h3>
+                            <p class="text-sm text-left font-semibold pl-2">
+                                First review: Use active recall to test yourself on the material without looking at notes.
+                            </p>
+                        </div>
+                        <div class="border-l-4 text-[var(--primary)]/80 mb-4 pb-2">
+                            <h3 class="text-md text-left font-semibold pl-2">Day 4</h3>
+                            <p class="text-sm text-left font-semibold pl-2">
+                                Second review: Test yourself again, focusing on anything you found challenging during the first review.
+                        </div>
+                        <div class="border-l-4 text-[var(--accent)]/80 mb-4 pb-2">
+                            <h3 class="text-md text-left font-semibold pl-2">Day 8</h3>
+                            <p class="text-sm text-left font-semibold pl-2">
+                                Third review: Revisit the material to strengthen your memory.
+                            </p>
+                        </div>
+                        <div class="border-l-4 text-[var(--secondary)]/80 mb-4 pb-2">
+                            <h3 class="text-md text-left font-semibold pl-2">Day 15</h3>
+                            <p class="text-sm text-left font-semibold pl-2">
+                                Fourth review: Review the information again, and use this session to identify and solidify remaining weak points.
+                            </p>
+                        </div>
+                        <div class="border-l-4 text-[var(--primary)]/80">
+                            <h3 class="text-md text-left font-semibold pl-2">Day 30</h3>
+                            <p class="text-sm text-left font-semibold pl-2">
+                                Fifth review: Conduct another review to continue strengthening your memory.
+                            </p>
+                        </div>
                     </div>
                 </div>
+
+            <!-- facts /-->
+
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 lg:col-span-2 gap-6 sm:gap-8 mt-8 sm:mt-12 font-bold">
+                <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow my-auto">
+                    <div class="text-4xl font-bold text-[var(--secondary)]/80 mb-2">85%</div>
+                    <div class="lg:text-xl sm:text-sm text-[#5b5a76]">Better Recall</div>
+                </div>
+                <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow my-auto">
+                    <div class="text-4xl font-bold text-[var(--secondary)]/80  mb-2">50%</div>
+                    <div class="lg:text-xl sm:text-sm text-[#5b5a76]">Less Time</div>
+                </div>
+                <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow my-auto">
+                    <div class="text-4xl font-bold text-[var(--secondary)]/80  mb-2">200%</div>
+                    <div class="lg:text-xl sm:text-sm text-[#5b5a76]">Better Memory</div>
+                </div>
+            </div>
     </div>
     
     </div>

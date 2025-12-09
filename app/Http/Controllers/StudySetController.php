@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
 
 use Illuminate\Http\Request;
 
@@ -29,7 +31,7 @@ class StudySetController extends Controller
         $studySet->load('flashcards');
 
         // increase the number of studies by 1, only do when they reach the end of study set
-        // $studySet->increment('num_studies');
+        $studySet->increment('num_studies');
 
 
         return view('study.show', ['set' => $studySet]);
@@ -82,11 +84,6 @@ class StudySetController extends Controller
             'author'=> Auth::user()->name,
         ]);
 
-       /* $studySet->flashcards()->create([
-            'term' => $validated['term'],
-            'definition' => $validated['definition'],
-        ]);
-*/
     /* for multiple flashacards maybe*/
         foreach ($validated['term'] as $i => $term) {
             $studySet->flashcards()->create([
@@ -101,16 +98,23 @@ class StudySetController extends Controller
 
     // saving sets to profile
     public function saveSet(StudySet $set) {
+        
         $user = Auth::user();
+
         if ($user->savedSets()->where('study_set_id', $set->id)->exists()) {
+            // unsaving a set
             $user->savedSets()->detach($set->id);
             $saved = false;
         }
+        // save a set
         else {
             $user->savedSets()->attach($set->id);
             $saved = true;
+            // increase number of saved
+            $set->increment('num_saved');
         }
         
+        // $saved is true or false depending on which if else entered
         return response()->json(['saved' => $saved]);
     }
 
@@ -118,18 +122,57 @@ class StudySetController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(StudySet $set)
     {
         //
+        return view('study.edit', ['set' => $set] , compact('set'), );
+
+
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+
+    // edit flascards this is important
+    public function update(Request $req, StudySet $set)
     {
         //
+
+         //
+        $validated = $req->validate([
+            'title'=>'required|string|max:255',
+            'subject'=> 'required',
+            'description'=>'required|string|max:2000',
+
+
+            'term' => 'required|array|min:1',
+            'term.*' => 'required|string|max:255',
+
+            'definition' => 'required|array|min:1',
+            'definition.*' => 'required|string|max:2000',
+
+            'flashcard_ids' => 'nullable|array',
+            'flashcard_ids.*' => 'nullable|integer',
+
+        ]);
+
+
+        $set->update($validated);
+
+    /* for multiple flashacards maybe*/
+        foreach ($validated['term'] as $i => $term) {
+            $set->flashcards()->create([
+                'term' => $term,
+                'definition' => $validated['definition'][$i],
+            ]);
+        }
+
+        return redirect()->route('study.show', $set->id)
+            ->with('success', 'Study Set updated successfully!');;
     }
+ 
 
     /**
      * Remove the specified resource from storage.
@@ -159,9 +202,5 @@ class StudySetController extends Controller
 
     }
 
-    // incrmeneting
-    public function incrementNumStudies(StudySet $studySet) {
-        $studySet->increment('num_studies');
-    }
 
 }

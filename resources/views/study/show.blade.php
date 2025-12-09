@@ -4,6 +4,8 @@
 </script>
 
 <x-layout>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <div class="max-w-150 flex flex-col justify-center items-align mx-auto gap-6">
         
         <div class="flex justify-between items-center text-center mx-12">
@@ -16,8 +18,21 @@
             </div>
         <!-- add an edit button for users studying their own set/-->
         
-        <!-- save sets /-->
-        <i class="star text-2xl bi bi-star text-[var(--secondary)]/60 font-bold px-4"></i>
+            <!-- if user clicks on their own study set, have edit button/-->
+        @if ($set->user_id === auth()->id())
+            <!--<a href="{{ route('edit', ['set' =>$set->id]) }}">
+                </a>/-->
+
+                <!-- took out of a link bc edit not functional, wont be for presentation /-->
+            <i class="bi bi-pencil-square  text-2xl  text-[var(--secondary)]/60 font-bold px-4 hover:text-[var(--accent)]"></i>
+
+        
+            <!-- else show the save set star /-->
+            @else
+                <i
+                class="star bi {{ auth()->user()?->savedSets->contains($set->id) ? 'bi-star-fill' : 'bi-star' }} text-2xl text-[var(--secondary)]/60 font-bold px-4 cursor-pointer"
+                data-set="{{ $set->id }}"></i>
+        @endif
 
     </div>
 
@@ -30,14 +45,15 @@
 
         <div class="flex justify-center align-center">
             <!-- https://codepen.io/mehedihasan06/pen/bGQgBZW some refernce code stuff /-->
-            <div class="flashcard relative  !mt-5 mx-auto bg-black/3 p-10 text-center h-75 w-125 rounded-xl transition duration-1000 ease-in-out" style="transform-style: preserve-3d;">
+            <div class="flashcard relative  !mt-5 mx-auto bg-black/3 p-10 text-center h-75 w-125 rounded-xl transition duration-1000 ease-in-out text-2xl font-semibold"
+                style="transform-style: preserve-3d;">
 
                 <!-- <h1 class="text text-center">{{ $set->flashcards[0]->term }}</h1> /-->
-                <div class="front absolute inset-0 flex items-center justify-center [backface-visibility:hidden]">
+                <div class="front p-2 m-2 absolute inset-0 flex items-center justify-center [backface-visibility:hidden]">
                     <h1 class="text-[var(--primary)]">{{ $set->flashcards[0]->term }}</h1>
                 </div>
 
-                <div class="back absolute inset-0 flex items-center justify-center [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                <div class="back  p-2 m-2 absolute inset-0 flex items-center justify-center [backface-visibility:hidden] [transform:rotateY(180deg)]">
                     <h1 class="text-[var(--primary)]">{{ $set->flashcards[0]->definition }}</h1>
                 </div>
             </div> 
@@ -146,25 +162,53 @@
             }
         });
 
-        // star toggling 
-        star = document.querySelector('.star')
-        let filled = false;
+        // star toggling to save and unsave study sets
+        const star = document.querySelector('.star')
+        // get set id
+        let setID = star.dataset.set;
 
-        star.addEventListener('click', () => {
-            if (filled) {
-                star.classList.add('bi-star');
-                star.classList.remove('bi-star-fill')
-            }
-            else {
-                star.classList.remove('bi-star');
-                star.classList.add('bi-star-fill')
-            }
-            filled = !filled;
+        // false if not filled, true if filled 
+        // let filled = star.classList.contains('bi-star-fill');
 
+        star.addEventListener('click',  () => {
 
+            fetch(`/study/${setID}/saveSet`, {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                    "Accept": "application/json"
+                }
+            })
+            
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                console.log(star.classList.toString());
+                // if saving the set
+                if (data.saved) {
+                    // add fill
+                    star.classList.remove('bi-star');
+                    star.classList.add('bi-star-fill');
+                } else {
+                    // remove fill if unsaving
+                    star.classList.remove('bi-star-fill');
+                    star.classList.add('bi-star');
+                }
+
+                /*
+                if (filled) {
+                    star.classList.remove('bi-star-fill');
+                    star.classList.add('bi-star');
+                } else {
+                    star.classList.remove('bi-star');
+                    star.classList.add('bi-star-fill');
+                }
+
+            filled = !filled;*/
+
+            })
+            .catch(err => console.error(err));
         });
-
-
 
         changeCards();
         
