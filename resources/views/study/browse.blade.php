@@ -32,8 +32,32 @@
         i will have one page that will load relevant flashcard data 🐱
         -->
         @fragment('study-search')
+
+        @if ($sets->isEmpty())
+                <div class=" flex sm:flex-col lg:flex-row justify-center items-center mx-auto py-8 ">
+                
+                <!-- text and button /-->
+                <div class="flex-1 flex flex-col space-y-6 p-4 lg:pl-10 gap-4 lg:gap-10 mx-auto justify-center">
+                    
+                    <p class="text-2xl font-semibold text-[var(--primary)]/70 mb-1">No study sets found...</p>
+                    <p class="text-xl text-[var(--primary)]/70 mb-6">
+                        Be the first to add that topic to Flip Focus!</p>
+
+                    <a href="{{ route('study.create') }}" class="btn mx-auto mb-8">
+                        <span>Create <i class="bi bi-plus"></i></span>
+                    </a>
+                </div>
+
+                <!--image  /-->
+                <div class="flex-1 flex justify-center lg:justify-center">
+                    <img src="{{ asset('images/cow.png') }}" alt="penguin" class="relative w-72 h-72 lg:w-80 lg:h-80">
+                </div>
+            </div>
+            @else
         <div id="study-sets" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 study-sets">
-            <!-- card 1-->
+
+            
+
             @foreach($sets as $set)
                 @auth
                 <a href="{{ route('study.show', ['studySet' =>$set->id]) }}" class="stretched-link">
@@ -85,6 +109,7 @@
                 </div>
                 </a>
             @endforeach
+            @endif
         </div>
         @endfragment
         

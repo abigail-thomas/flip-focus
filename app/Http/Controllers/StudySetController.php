@@ -17,7 +17,7 @@ class StudySetController extends Controller
      */
     public function index()
     {
-        $sets = StudySet::orderBy('title')->paginate(3); // i think i wanna order by rating eventually 
+        $sets = StudySet::orderBy('num_saved', 'DESC')->get(); // i think i wanna order by rating eventually 
         return view('components.index.featuredcards', ['sets' => $sets]);
         //
     }
@@ -27,7 +27,6 @@ class StudySetController extends Controller
      */
     public function show(StudySet $studySet)
     {
-        //  only have 5 sets load
         $studySet->load('flashcards');
 
         // increase the number of studies by 1, only do when they reach the end of study set
@@ -38,7 +37,7 @@ class StudySetController extends Controller
     }
 
     public function browse() {
-        $sets = StudySet::orderBy('title')->get();
+        $sets = StudySet::orderBy('num_saved', 'DESC')->get();
 
         return view('study.browse', ['sets' => $sets]);
     }

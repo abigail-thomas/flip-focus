@@ -15,6 +15,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- card 1-->
             @foreach($sets as $set)
+                
                 @auth
                 <a href="{{ route('study.show', ['studySet' =>$set->id]) }}" class="stretched-link">
                 @endauth

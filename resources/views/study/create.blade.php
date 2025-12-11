@@ -13,7 +13,7 @@
             
         <form action="{{ route('study.store') }}" method="POST" class="flex flex-col form w-full bg-gradient-to-br from-black/5 to-black/2  m-4 mb-8 p-8 rounded-xl">
             @csrf
-        <div class="bg-gradient-to-br from-[var(--accent)]/50 to-[var(--secondary)]/70 rounded-xl p-6 mx-auto">
+        <div class="bg-gradient-to-br from-[var(--accent)]/50 to-[var(--secondary)]/70 rounded-xl p-6 mx-auto max-w-175">
                 
                 <!-- <label for="set-title"><h3>Title</h3></label> /-->
                 <input type="text" name="title" id="title" placeholder="Title: e.g., Advanced Topics in Web" required
@@ -41,7 +41,7 @@
             </div>
 
             <div id="flashcard-container" class="mt-2">
-                <div  class="flashcard bg-gradient-to-br from-[var(--accent)]/50 to-[var(--secondary)]/70 rounded-xl p-6 mx-auto my-4" id="flashcards-container">
+                <div  class="flashcard bg-gradient-to-br from-[var(--accent)]/50 to-[var(--secondary)]/70 rounded-xl p-6 mx-auto my-4 max-w-175" id="flashcards-container">
                     <!-- delete term and def  /-->
                     <div class="flex justify-between">
                         <h3 class="text-left text-[#F8F8F8] p-2">1.</h3>

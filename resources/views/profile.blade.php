@@ -32,17 +32,11 @@
         ... i dont think that shoudl be too difficult to implement-->
         <h1 class="mb-2 py-8 text-3xl lg:text-5xl font-bold text-[var(--primary)] text-center"
             >Your Study Sets</h1>
-        <!-- add category (language, history, etc..) /-->
-            
 
-        <!-- the linsk to each flashcard is obv not real
-        i will have one page that will load relevant flashcard data 🐱
-        -->
+        <!-- if user has created at least one study set /-->
         @if($studySets->count() > 0)
 
         <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- card 1-->
-
                 @foreach($studySets as $set)
 
                 <div
@@ -103,74 +97,13 @@
 
                     </div>
                 </div>
-                    </a> 
+                </a>
                 </div>
                 
                 @endforeach
         </div>
+
         
-                <!-- saved sets /-->
-                @if ($savedSets->count() > 0)
-
-                    <div class="mt-10 mb-4 inline-flex items-center justify-center w-18 h-18 bg-gradient-to-r from-[#d95242] to-[#d95242]/70 rounded-full shadow-md mx-auto">
-                        <i class="bi bi-heart-fill text-white text-3xl"></i>
-                    </div>
-                    <h2 class="mb-2 pb-8 text-2xl lg:text-4xl font-bold text-[var(--primary)] text-center"
-                        >Your Saved Sets </h2>
-                <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                    @foreach($savedSets as $set)
-
-                <div
-                class="bg-white rounded-2xl
-                p-6 shadow-md hover:shadow-lg
-                transition-all duration-300 ease-in-out transform hover:translate-x-1 hover:scale-105
-                text-[var(--primary)]
-                border-none text-left relative
-                ">
-
-                <a href="{{ route('study.show', ['studySet' =>$set->id]) }}" class="stretched-link">
-                <div class="flex items-start justify-between mb-4 group-hover:text-[#d95242] ">
-                    <div class="flex-1">
-                        <h3 class="font-bold text-2xl mb-2  text-[var(--secondary)]/80">{{ $set['title'] }}</h3>
-
-                        <div class="card-content">
-                            @if ($set->user)
-                                <p class="text-sm mb-1 text-[var(--primary)]/60 flex items-center gap-1">
-                                    <i class="bi bi-person-circle"></i>
-                                    <span>{{ $set->user->name }}</span>
-                                </p>
-                            @endif
-                        </div>
-                        
-                        <p class="text-[var(--primary)]/80 mb-2 min-h-10">{{ $set['description'] }}</p>
-                        <hr class="my-3 border-[var(--primary)]/20 mb-4"/>
-                        
-                        
-                        <div class="flex items-center justify-between px-2">
-                            <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                <i class="bi bi-layers-fill text-[#d95242]/70"></i>
-                                <span class="text-sm font-medium">{{ $set->flashcards->count() }} cards</span>
-                            </div>
-                            <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                <i class="bi bi-bookmark-check-fill text-[var(--primary)]/80"></i>
-                                <span class="text-sm font-medium">{{ $set['num_studies'] }} studies</span>
-                            </div>
-                            <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                <i class="bi bi-star-fill text-[var(--secondary)]/60"></i>
-                                <span class="text-sm font-medium">{{ $set['num_saved']}} saves</span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                    </a> 
-                </div>
-                
-                @endforeach
-                </div>
-                @endif
-
         <!-- no study sets yet /-->
         @else
             <hr class=" border-[var(--accent)]/60 mb-4 max-w-100 mx-auto"/>
@@ -197,8 +130,70 @@
                 </div>
             </div>
 
-                
+        @endif
+        
+            <!-- saved sets /-->
+            @if ($savedSets->count() > 0)
+
+                <div class="mt-10 mb-4 inline-flex items-center justify-center w-18 h-18 bg-gradient-to-r from-[#d95242] to-[#d95242]/70 rounded-full shadow-md mx-auto">
+                    <i class="bi bi-heart-fill text-white text-3xl"></i>
+                </div>
+                <h2 class="mb-2 pb-8 text-2xl lg:text-4xl font-bold text-[var(--primary)] text-center"
+                    >Your Saved Sets </h2>
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                @foreach($savedSets as $set)
+
+            <div
+            class="bg-white rounded-2xl
+            p-6 shadow-md hover:shadow-lg
+            transition-all duration-300 ease-in-out transform hover:translate-x-1 hover:scale-105
+            text-[var(--primary)]
+            border-none text-left relative
+            ">
+
+            <a href="{{ route('study.show', ['studySet' =>$set->id]) }}" class="stretched-link">
+            <div class="flex items-start justify-between mb-4 group-hover:text-[#d95242] ">
+                <div class="flex-1">
+                    <h3 class="font-bold text-2xl mb-2  text-[var(--secondary)]/80">{{ $set['title'] }}</h3>
+
+                    <div class="card-content">
+                        @if ($set->user)
+                            <p class="text-sm mb-1 text-[var(--primary)]/60 flex items-center gap-1">
+                                <i class="bi bi-person-circle"></i>
+                                <span>{{ $set->user->name }}</span>
+                            </p>
+                        @endif
+                    </div>
+                    
+                    <p class="text-[var(--primary)]/80 mb-2 min-h-10">{{ $set['description'] }}</p>
+                    <hr class="my-3 border-[var(--primary)]/20 mb-4"/>
+                    
+                    
+                    <div class="flex items-center justify-between px-2">
+                        <div class="flex items-center gap-1 text-[var(--primary)]/70">
+                            <i class="bi bi-layers-fill text-[#d95242]/70"></i>
+                            <span class="text-sm font-medium">{{ $set->flashcards->count() }} cards</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-[var(--primary)]/70">
+                            <i class="bi bi-bookmark-check-fill text-[var(--primary)]/80"></i>
+                            <span class="text-sm font-medium">{{ $set['num_studies'] }} studies</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-[var(--primary)]/70">
+                            <i class="bi bi-star-fill text-[var(--secondary)]/60"></i>
+                            <span class="text-sm font-medium">{{ $set['num_saved']}} saves</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            </a>
+            </div>
+            
+            @endforeach
+            </div>
             @endif
+
 
                     
 
