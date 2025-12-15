@@ -192,7 +192,11 @@ class StudySetController extends Controller
         $query = $req->input('search-bar');
 
         // fetch sets from model
-        $sets = StudySet::where('title', 'LIKE', "%{$query}%")->get();
+        // title, author, and subject 
+        $sets = StudySet::where('title', 'LIKE', "%{$query}%")
+            ->orWhere('author', 'LIKE', "%{$query}%")
+            ->orWhere('subject', 'LIKE', "%{$query}%")
+            ->get();
         // $sets = StudySet::all();
 
         // return view for blade i need, fragment study list

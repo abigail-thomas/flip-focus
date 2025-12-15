@@ -3,27 +3,31 @@
     const flashcards = @json($set->flashcards);
 </script>
 
+    <!-- confetti !!!! https://preline.co/docs/confetti.html /-->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 <x-layout>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <div class="max-w-150 flex flex-col justify-center items-align mx-auto gap-6">
+    <div class="max-w-150 flex flex-col justify-center items-align mx-auto gap-6 p-2">
         
         <div class="flex justify-between items-center text-center mx-12">
             <div class="flex flex-col">
                 <h1 class="font-bold text-3xl text-[var(--primary)] px-4">{{ $set->title }}</h1>
                 <p class="pl-4 pt-1 text-sm  text-[var(--primary)]/60 flex items-center gap-1">
-                    <i class="bi bi-person-circle"></i>
-                    <span>{{ $set->user->name }}</span>
+                    <!-- link to profiles, not implemented yet but want to do this later /-->
+                    <a href="">
+                        <i class="bi bi-person-circle"></i>
+                        <span>{{ $set->user->name }}</span>
+                    </a>
                 </p>
             </div>
         <!-- add an edit button for users studying their own set/-->
-        
             <!-- if user clicks on their own study set, have edit button/-->
         @if ($set->user_id === auth()->id())
             <!--<a href="{{ route('edit', ['set' =>$set->id]) }}">
                 </a>/-->
-
-                <!-- took out of a link bc edit not functional, wont be for presentation /-->
+            <!-- took out of a link bc edit not functional, wont be for presentation /-->
             <i class="bi bi-pencil-square  text-2xl  text-[var(--secondary)]/60 font-bold px-4 hover:text-[var(--accent)]"></i>
 
         
@@ -40,12 +44,18 @@
 
     @if($set->flashcards->isNotEmpty())
 
-        <!-- progress bar  /-->
+        <!-- progress bar  https://flowbite.com/docs/components/progress/ /-->
+        <div class=" mx-auto w-125 bg-neutral-quaternary rounded-full">
+            <div class="bg-gradient-to-r from-[var(--accent)]/50 to-[var(--secondary)]/70
+                        text-xs font-medium text-white text-center leading-none rounded-full h-6 flex items-center justify-center
+                        progress_bar transition-[width] duration-500 ease-out" style="width: 0%"></div>
+        </div>
+
 
 
         <div class="flex justify-center align-center">
             <!-- https://codepen.io/mehedihasan06/pen/bGQgBZW some refernce code stuff /-->
-            <div class="flashcard relative  !mt-5 mx-auto bg-black/3 p-10 text-center h-75 w-125 rounded-xl transition duration-1000 ease-in-out text-2xl font-semibold"
+            <div class="flashcard relative  mx-auto bg-black/3 p-5 text-center h-75 w-125 rounded-xl transition duration-1000 ease-in-out text-2xl font-semibold"
                 style="transform-style: preserve-3d;">
 
                 <!-- <h1 class="text text-center">{{ $set->flashcards[0]->term }}</h1> /-->
@@ -91,14 +101,33 @@
 
         let index = 0;
         let isFlipped = false;
+        let canFlip = true;
 
 
+        // getting percentage for the progress bar
+        const progress_bar = document.querySelector('.progress_bar');
+        const totalCards = {{ $set->flashcards->count()}};
+        console.log("Total Cards: ", totalCards);
+
+        function updateProgress() {
+            const percent = Math.min(Math.round((index / totalCards) * 100), 100);
+
+            progress_bar.style = `width: ${percent}%`;
+            progress_bar.textContent = `${percent}%`;
+
+        }
+
+        // percentage = (index + 1) / totalCards;
+        // console.log(percentage, "%");
+
+        // confetti
+        // if can flip (cannot flip on last card )
         function changeCards() {
             const termSide = flashcard.querySelector('.front');
             const defSide = flashcard.querySelector('.back');
 
             
-            // flip back to term when card switches 
+            // flip back to term when card switches
             // causing issues, showing term of next card bc it switches before flipping
             // disbale the transitions for a moment
             flashcard.style.transition = 'none';
@@ -124,6 +153,11 @@
         // let showTerm = true;
 
         flashcard.addEventListener('click', () => {
+
+            if (!canFlip) {
+                return; // dont allow flipping on last slide basically 
+            }
+
             if (isFlipped) {
                 flashcard.style.transform = 'rotateY(0deg)';
             }
@@ -136,29 +170,99 @@
             }
             isFlipped = !isFlipped;
         });
+    
 
         // the arrows to go back and next
         // back 
         document.querySelector('.arrow-back').addEventListener('click', () => {
+            canFlip = true; // set back to true 
+            console.log("index: ", index);
             if (index > 0) {
                 index--;
+
+                updateProgress();
                 changeCards();
+
             }
+
+            // take away the styling 
+            flashcard.classList.add('bg-black/3');
+                flashcard.classList.remove(
+                    'bg-gradient-to-br',
+                    'from-[var(--accent)]/40',
+                    'to-[var(--secondary)]/60'
+                );
+
+            //flashcard.id = ' id="hs-run-on-click-run-confetti" ';
+            
+            updateProgress();
         });
 
         // next
         document.querySelector('.arrow-next').addEventListener('click', () => {
-            if (index < flashcards.length - 1) {
+            console.log("index: ", index);
+            if (index < flashcards.length -1) {
                 index++;
-                
+                updateProgress();
                 changeCards();
+                return;
+            }
                 // console.log(index);
                 // reaches last card, increment num studies
-                if (index === flashcards.length - 1) {
-                    console.log('here');
-                    
-                }
-        
+            if (index === flashcards.length - 1) {
+                // percentage = 100;
+                index = totalCards;
+                updateProgress();
+                canFlip = false;
+                console.log("100% done !!!");
+
+                // style for completion
+                flashcard.classList.remove('bg-black/3');
+                flashcard.classList.add(
+                    'bg-gradient-to-br',
+                    'from-[var(--accent)]/40',
+                    'to-[var(--secondary)]/60',
+                );
+
+                const termSide = flashcard.querySelector('.front');
+                const defSide = flashcard.querySelector('.back');
+
+
+                termSide.innerHTML = `
+                    <div class="flex flex-col items-center justify-center gap-4">
+                        <i class="bi bi-check-circle text-5xl text-[var(--bg)]"></i>
+                        <h1 class="text-3xl font-bold text-[var(--bg)]">
+                            All Done!
+                        </h1>
+                        <p class="text-sm text-[var(--bg)]/70">
+                            Nice work — you finished the studying
+                        </p>
+                    </div>
+                `;
+
+                // make the def bc if you go from def to the last card it doesnt flip oopsie bug hard coded fix 
+                defSide.innerHTML = `
+                    <div class="flex flex-col items-center justify-center gap-4">
+                        <i class="bi bi-check-circle text-5xl text-[var(--bg)]"></i>
+                        <h1 class="text-3xl font-bold text-[var(--bg)]">
+                            All Done!
+                        </h1>
+                        <p class="text-sm text-[var(--bg)]/70">
+                            Nice work — you finished the studying
+                        </p>
+                    </div>
+                `;
+
+                // confetti !!!! https://preline.co/docs/confetti.html 
+                confetti({
+                    particleCount: 100,
+                    spread: 80,
+                    origin: {
+                        y: 0.6
+                    },
+                    colors: ['#5b5a76', '#d95242', '#fcba63']
+                });
+            
             }
         });
 
@@ -209,6 +313,7 @@
             })
             .catch(err => console.error(err));
         });
+
 
         changeCards();
         

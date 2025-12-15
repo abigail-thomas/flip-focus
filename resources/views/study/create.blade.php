@@ -101,10 +101,25 @@
             cardCount++;
         }
 
+
+        // recalucate the numbers on each card
+        function renumber() {
+            // get the flashcard and go through to upate the index
+            const cards = document.querySelectorAll('.flashcard');
+            cards.forEach((card, index) => {
+                card.querySelector('h3').textContent = `${index + 1}.`;
+            });
+            // fix the card count
+            cardCount = cards.length;
+        }
+
         // when delted, the number on term and def shoudl change grrrrr
         document.getElementById('flashcards-container').addEventListener('click', function(e) {
             if(e.target.closest('.delete-btn')) {
                 e.target.closest('.flashcard').remove();
+                
+            // fix numbering
+            renumber();
             }
         });
 
