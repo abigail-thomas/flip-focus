@@ -25,16 +25,14 @@
         <!-- add an edit button for users studying their own set/-->
             <!-- if user clicks on their own study set, have edit button/-->
         @if ($set->user_id === auth()->id())
-            <!--<a href="{{ route('edit', ['set' =>$set->id]) }}">
-                </a>/-->
+            <!--<a href="{{ route('edit', ['set' =>$set->id]) }}"></a>/-->
             <!-- took out of a link bc edit not functional, wont be for presentation /-->
             <i class="bi bi-pencil-square  text-2xl  text-[var(--secondary)]/60 font-bold px-4 hover:text-[var(--accent)]"></i>
-
-        
-            <!-- else show the save set star /-->
+            
+            <!-- else show the save set with bookmark /-->
             @else
                 <i
-                class="star bi {{ auth()->user()?->savedSets->contains($set->id) ? 'bi-star-fill' : 'bi-star' }} text-2xl text-[var(--secondary)]/60 font-bold px-4 cursor-pointer"
+                class="bookmark bi {{ auth()->user()?->savedSets->contains($set->id) ? 'bi-bookmark-fill' : 'bi-bookmark' }} text-2xl text-[var(--secondary)]/60 font-bold px-4 cursor-pointer transition duration-300 ease-in-out hover:-translate-y-1"
                 data-set="{{ $set->id }}"></i>
         @endif
 
@@ -45,35 +43,38 @@
     @if($set->flashcards->isNotEmpty())
 
         <!-- progress bar  https://flowbite.com/docs/components/progress/ /-->
-        <div class=" mx-auto w-125 bg-neutral-quaternary rounded-full">
+        <div class=" mx-auto w-125 bg-black/3 rounded-full">
             <div class="bg-gradient-to-r from-[var(--accent)]/50 to-[var(--secondary)]/70
                         text-xs font-medium text-white text-center leading-none rounded-full h-6 flex items-center justify-center
                         progress_bar transition-[width] duration-500 ease-out" style="width: 0%"></div>
         </div>
 
-
-
         <div class="flex justify-center align-center">
             <!-- https://codepen.io/mehedihasan06/pen/bGQgBZW some refernce code stuff /-->
-            <div class="flashcard relative  mx-auto bg-black/3 p-5 text-center h-75 w-125 rounded-xl transition duration-1000 ease-in-out text-2xl font-semibold"
-                style="transform-style: preserve-3d;">
+            <div class=" relative mx-auto">
+                <div class="flashcard bg-black/3 p-5 text-center h-75 w-125 rounded-xl transition duration-1000 ease-in-out text-2xl font-semibold"
+                    style="transform-style: preserve-3d;">
+                
+                    <!-- <h1 class="text text-center">{{ $set->flashcards[0]->term }}</h1> /-->
+                    <div class="front p-2 m-2 absolute inset-0 flex items-center justify-center [backface-visibility:hidden]">
+                        <h1 class="text-[var(--primary)]">{{ $set->flashcards[0]->term }}</h1>
+                    </div>
 
-                <!-- <h1 class="text text-center">{{ $set->flashcards[0]->term }}</h1> /-->
-                <div class="front p-2 m-2 absolute inset-0 flex items-center justify-center [backface-visibility:hidden]">
-                    <h1 class="text-[var(--primary)]">{{ $set->flashcards[0]->term }}</h1>
+                    <div class="back  p-2 m-2 absolute inset-0 flex items-center justify-center [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                        <h1 class="text-[var(--primary)]">{{ $set->flashcards[0]->definition }}</h1>
+                    </div>
                 </div>
 
-                <div class="back  p-2 m-2 absolute inset-0 flex items-center justify-center [backface-visibility:hidden] [transform:rotateY(180deg)]">
-                    <h1 class="text-[var(--primary)]">{{ $set->flashcards[0]->definition }}</h1>
-                </div>
-            </div> 
-        </div> 
+            </div>
+        </div>
+        
+        
         @else 
             <p class="text-xl ">No flashcards yet...</p>
     @endif
 
         <!-- idk style these better /-->
-        <div class="arrows flex justify-center items-align text-4xl gap-2 mb-10 ">
+        <div class="arrows flex justify-center items-align text-4xl gap-2 ">
             <i class="arrow-back bg-gradient-to-br from-[var(--accent)]/50 to-[var(--secondary)]/70
                 text-[#f8f8f8] rounded-xl p-2 bi bi-arrow-left
                 transition duration-300 ease-in-out hover:scale-105 hover:translate-z-1"></i>
@@ -89,6 +90,12 @@
                 text-[#f8f8f8] rounded-xl p-2 bi bi-arrow-right
                 transition duration-300 ease-in-out hover:scale-105 hover:translate-z-1"></i>
         </div>
+        <div class="flex justify-end text-xl font-bold text-[var(--primary)] gap-4 mb-10 mr-14">
+            <i class="bi bi-gear transition duration-300 ease-in-out hover:-translate-y-1"></i>
+            <i id="shuffle" class="bi bi-shuffle transition duration-300 ease-in-out hover:-translate-y-1"></i>
+            <i class="bi bi-flag transition duration-300 ease-in-out hover:-translate-y-1"></i>
+        </div>
+
 
     </div>
 
@@ -151,7 +158,7 @@
                 
         }
         // let showTerm = true;
-
+        // add that space bar flips eventually (also arrows go on to next card and previous)
         flashcard.addEventListener('click', () => {
 
             if (!canFlip) {
@@ -266,15 +273,14 @@
             }
         });
 
-        // star toggling to save and unsave study sets
-        const star = document.querySelector('.star')
+        // bookmark toggling to save and unsave study sets
+        const bookmark = document.querySelector('.bookmark')
         // get set id
-        let setID = star.dataset.set;
+        let setID = bookmark.dataset.set;
 
         // false if not filled, true if filled 
-        // let filled = star.classList.contains('bi-star-fill');
 
-        star.addEventListener('click',  () => {
+        bookmark.addEventListener('click',  () => {
 
             fetch(`/study/${setID}/saveSet`, {
                 method: "POST",
@@ -287,33 +293,25 @@
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                console.log(star.classList.toString());
+                console.log(bookmark.classList.toString());
                 // if saving the set
                 if (data.saved) {
                     // add fill
-                    star.classList.remove('bi-star');
-                    star.classList.add('bi-star-fill');
+                    bookmark.classList.remove('bi-bookmark');
+                    bookmark.classList.add('bi-bookmark-fill');
                 } else {
                     // remove fill if unsaving
-                    star.classList.remove('bi-star-fill');
-                    star.classList.add('bi-star');
+                    bookmark.classList.remove('bi-bookmark-fill');
+                    bookmark.classList.add('bi-bookmark');
                 }
 
-                /*
-                if (filled) {
-                    star.classList.remove('bi-star-fill');
-                    star.classList.add('bi-star');
-                } else {
-                    star.classList.remove('bi-star');
-                    star.classList.add('bi-star-fill');
-                }
-
-            filled = !filled;*/
 
             })
             .catch(err => console.error(err));
         });
 
+        // shuffle functions for flashcards
+        // do later on eventually,on
 
         changeCards();
         

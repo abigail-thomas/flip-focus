@@ -17,7 +17,7 @@ class StudySetController extends Controller
      */
     public function index()
     {
-        $sets = StudySet::orderBy('num_saved', 'DESC')->get(); // i think i wanna order by rating eventually 
+        $sets = StudySet::orderBy('num_saved', 'DESC')->get();
         return view('components.index.featuredcards', ['sets' => $sets]);
         //
     }
@@ -160,17 +160,17 @@ class StudySetController extends Controller
 
         $set->update($validated);
 
-    /* for multiple flashacards maybe*/
-        foreach ($validated['term'] as $i => $term) {
-            $set->flashcards()->create([
-                'term' => $term,
-                'definition' => $validated['definition'][$i],
-            ]);
-        }
+            /* for multiple flashacards maybe*/
+                foreach ($validated['term'] as $i => $term) {
+                    $set->flashcards()->create([
+                        'term' => $term,
+                        'definition' => $validated['definition'][$i],
+                    ]);
+                }
 
-        return redirect()->route('study.show', $set->id)
-            ->with('success', 'Study Set updated successfully!');;
-    }
+                return redirect()->route('study.show', $set->id)
+                    ->with('success', 'Study Set updated successfully!');;
+            }
  
 
     /**

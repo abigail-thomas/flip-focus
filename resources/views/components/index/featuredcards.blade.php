@@ -13,7 +13,6 @@
         i will have one page that will load relevant flashcard data 🐱
         -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- card 1-->
             @foreach($sets as $set)
                 
                 @auth
@@ -53,11 +52,11 @@
                                     <span class="text-sm font-medium">{{ $set->flashcards->count() }} cards</span>
                                 </div>
                                 <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                    <i class="bi bi-bookmark-check-fill text-[var(--primary)]/60"></i>
+                                    <i class="bi bi-book-half text-[var(--primary)]/60"></i>
                                     <span class="text-sm font-medium">{{ $set['num_studies'] }} studies</span>
                                 </div>
                                 <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                    <i class="bi bi-star-fill text-[var(--secondary)]/60"></i>
+                                    <i class="bi bi-bookmark-fill text-[var(--secondary)]/60"></i>
                                     <span class="text-sm font-medium">{{ $set['num_saved']}} saves</span>
                                 </div>
                             </div>
@@ -71,7 +70,7 @@
         </div>
         
         <!-- broswe arrow /-->
-        <div class="mt-20 animate-bounce">
+        <div class="mt-20 animate-bounce w-30 mx-auto">
             @auth
                 <a href="{{ route('study.browse') }}">
             @endauth

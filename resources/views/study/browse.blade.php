@@ -95,11 +95,11 @@
                                     <span class="text-sm font-medium">{{ $set->flashcards->count() }} cards</span>
                                 </div>
                                 <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                    <i class="bi bi-bookmark-check-fill text-[var(--primary)]/80"></i>
+                                    <i class="bi bi-book-half text-[var(--primary)]/80"></i>
                                     <span class="text-sm font-medium">{{ $set['num_studies'] }} studies</span> <!-- make this number dynamic /-->
                                 </div>
                                 <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                    <i class="bi bi-star-fill text-[var(--secondary)]/60"></i>
+                                    <i class="bi bi-bookmark-fill text-[var(--secondary)]/60"></i>
                                     <span class="text-sm font-medium">{{ $set['num_saved']}} saves</span>
                                 </div>
                             </div>

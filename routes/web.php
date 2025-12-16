@@ -9,7 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Models\StudySet;
 
 Route::get('/', function () {
-    $sets = StudySet::orderBy('title')->take(5)->get();
+    $sets = StudySet::orderBy('title')->take(6)->get();
     return view('index', ['sets' => $sets]);
 })->name('home');
 
@@ -24,7 +24,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/study/browse', [StudySetController::class, 'browse'])->name('study.browse');
 Route::get('/study/search', [StudySetController::class, 'search'])->name('search');
 Route::get('/study/edit/{set}', [StudySetController::class, 'edit'])->name('edit');
-Route::put('/study/update', [StudySetController::class, 'update'])->name('update');
+Route::post('/study/update', [StudySetController::class, 'update'])->name('update');
 Route::get('/study/{studySet}', [StudySetController::class, 'show'])->name('study.show');
 // incrementing thre number of studies
 Route::post('/study/{studySet}/increment', [StudySetController::class, 'incrementNumStudies'])->name('study.increment');

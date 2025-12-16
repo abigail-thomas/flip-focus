@@ -3,6 +3,7 @@
 @import 'tailwindcss';
 /*@import "flowbite/src/themes/default";*/
 
+@custom-variant hover (&:hover);
 
 @theme {
     --primary: #5b5a76;
