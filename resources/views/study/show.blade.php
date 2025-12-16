@@ -1,6 +1,6 @@
 
 <script>
-    const flashcards = @json($set->flashcards);
+    let flashcards = @json($set->flashcards);
 </script>
 
     <!-- confetti !!!! https://preline.co/docs/confetti.html /-->
@@ -27,7 +27,7 @@
         @if ($set->user_id === auth()->id())
             <!--<a href="{{ route('edit', ['set' =>$set->id]) }}"></a>/-->
             <!-- took out of a link bc edit not functional, wont be for presentation /-->
-            <i class="bi bi-pencil-square  text-2xl  text-[var(--secondary)]/60 font-bold px-4 hover:text-[var(--accent)]"></i>
+            <i class="bi bi-pencil-square text-2xl  text-[var(--secondary)]/60 font-bold px-4 transition duration-300 ease-in-out hover:-translate-y-1 hover:text-[var(--accent)]"></i>
             
             <!-- else show the save set with bookmark /-->
             @else
@@ -91,9 +91,9 @@
                 transition duration-300 ease-in-out hover:scale-105 hover:translate-z-1"></i>
         </div>
         <div class="flex justify-end text-xl font-bold text-[var(--primary)] gap-4 mb-10 mr-14">
-            <i class="bi bi-gear transition duration-300 ease-in-out hover:-translate-y-1"></i>
-            <i id="shuffle" class="bi bi-shuffle transition duration-300 ease-in-out hover:-translate-y-1"></i>
-            <i class="bi bi-flag transition duration-300 ease-in-out hover:-translate-y-1"></i>
+            <i class="bi bi-gear transition duration-300 ease-in-out hover:-translate-y-1 cursor-pointer"></i>
+            <i id="shuffle" class="shuffle bi bi-shuffle transition duration-300 ease-in-out hover:-translate-y-1 cursor-pointer"></i>
+            <i class="bi bi-flag transition duration-300 ease-in-out hover:-translate-y-1 cursor-pointer"></i>
         </div>
 
 
@@ -103,7 +103,7 @@
     <!-- i gotta add js for the flip to definition im guessing --DONE /-->
     <script>
 
-        const flashcard = document.querySelector('.flashcard');
+        let flashcard = document.querySelector('.flashcard');
         const numShown = document.querySelector('.num');
 
         let index = 0;
@@ -276,43 +276,62 @@
         // bookmark toggling to save and unsave study sets
         const bookmark = document.querySelector('.bookmark')
         // get set id
-        let setID = bookmark.dataset.set;
+        if (bookmark) {
 
-        // false if not filled, true if filled 
+            let setID = bookmark.dataset.set;
 
-        bookmark.addEventListener('click',  () => {
+            // false if not filled, true if filled 
 
-            fetch(`/study/${setID}/saveSet`, {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-                    "Accept": "application/json"
-                }
-            })
-            
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                console.log(bookmark.classList.toString());
-                // if saving the set
-                if (data.saved) {
-                    // add fill
-                    bookmark.classList.remove('bi-bookmark');
-                    bookmark.classList.add('bi-bookmark-fill');
-                } else {
-                    // remove fill if unsaving
-                    bookmark.classList.remove('bi-bookmark-fill');
-                    bookmark.classList.add('bi-bookmark');
-                }
+            bookmark.addEventListener('click',  () => {
+
+                fetch(`/study/${setID}/saveSet`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                        "Accept": "application/json"
+                    }
+                })
+                
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    console.log(bookmark.classList.toString());
+                    // if saving the set
+                    if (data.saved) {
+                        // add fill
+                        bookmark.classList.remove('bi-bookmark');
+                        bookmark.classList.add('bi-bookmark-fill');
+                    } else {
+                        // remove fill if unsaving
+                        bookmark.classList.remove('bi-bookmark-fill');
+                        bookmark.classList.add('bi-bookmark');
+                    }
 
 
-            })
-            .catch(err => console.error(err));
-        });
+                })
+                .catch(err => console.error(err));
+            });
+        }
 
         // shuffle functions for flashcards
         // do later on eventually,on
+        function shuffleCards(cards) {
+            for (let i = cards.length - 1 ; i> 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1)); // get random integer
+                [cards[i], cards[j]] = [cards[j], cards[i]]; // swap em up
+            }
+            return cards;
+        }
 
+        let shuffle = document.getElementById('shuffle');
+        shuffle.addEventListener('click', () => {
+            console.log('shuffle');
+            flashcards = shuffleCards(flashcards);
+            index = 0; // start over
+            canFlip = true; // set back to true just in case
+            updateProgress(); // set back to start
+            changeCards(); // set back also yeah
+        });
         changeCards();
         
 
