@@ -111,7 +111,7 @@
         <div class="flex justify-end text-xl font-bold text-[var(--primary)] gap-4 mb-10 mr-14">
             <i id="settings" class="bi bi-gear transition duration-300 ease-in-out hover:-translate-y-1 cursor-pointer"></i>
             <i id="shuffle" class="shuffle bi bi-shuffle transition duration-300 ease-in-out hover:-translate-y-1 cursor-pointer"></i>
-            <i class="bi bi-flag transition duration-300 ease-in-out hover:-translate-y-1 cursor-pointer"></i>
+            <i id="report" class="bi bi-flag transition duration-300 ease-in-out hover:-translate-y-1 cursor-pointer"></i>
         </div>
 
         <!-- modal pop up for settings, i can add other stuff later
@@ -119,13 +119,13 @@
             then get starred terms only toggle
             think of a third option
         /-->
-        <div class="modal hidden z-100 fixed inset-0 items-center justify-center">
+        <div class="modal-settings hidden z-100 fixed inset-0 items-center justify-center">
             <div class=" bg-[var(--bg)] w-125 rounded-xl shadow">
                 <div class="flex justify-between p-5">
-                    <h2 class="text-2xl text-[var(--primary)] font-bold">Settings</h2>
-                    <i class="bi bi-x text-3xl text-[var(--primary)] pt-2 hover:text-[var(--accent)] cursor-pointer"></i>
+                    <h2 class="text-2xl text-[var(--primary)] font-bold"><i class="bi bi-sliders text-xl"></i> Settings</h2>
+                    <i class="close-settings bi bi-x text-3xl text-[var(--primary)] pt-2 hover:text-[var(--accent)] cursor-pointer"></i>
                 </div>
-                <hr class="mx-3 border-[var(--primary)]/20 mb-4"/>
+                <hr class="mx-3 border-[var(--primary)]/20 mb-2"/>
                 <div class="p-5 flex justify-between">
                     <div class="">
                         <p class="text-sm text-[var(--primary)]/60 flex items-center ">Toggle from term to definition</p>
@@ -139,6 +139,31 @@
                         </label>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- report an issue /-->
+        <div class="modal-report hidden z-100 fixed inset-0 items-center justify-center">
+            <div class=" bg-[var(--bg)] w-125 rounded-xl shadow">
+                <div class="flex justify-between p-5">
+                    <h2 class="text-2xl text-[var(--primary)] font-bold"><i class="bi bi-exclamation-diamond text-xl text-[var(--secondary)]"></i> Report an Issue</h2>
+                    <i class="close-report bi bi-x text-3xl text-[var(--primary)] pt-2 hover:text-[var(--accent)] cursor-pointer"></i>
+                </div>
+                <hr class="mx-3 border-[var(--primary)]/20"/>
+                <div class="pl-5 pt-5 flex justify-start">
+                    <ul class="text-sm text-[var(--primary)]/60">
+                        <li>It contains inaccurate information</li>
+                        <li>It contains inappropriate content</li>
+                        <li>It violates my intellectual property rights</li>
+                    </ul>
+
+                </div>
+                    <div class="flex justify-end items-end mb-4 mr-4">
+                        <button class="rounded-md p-2 bg-[var(--accent)]/80 text-[var(--bg)] focus:outline-none border-none
+                            hover:bg-[var(--secondary)]/70
+                            transition-all duration-300 ease-in-out transform hover:shadow-md">Continue</button>
+                    </div>
+                
             </div>
         </div>
 
@@ -402,22 +427,38 @@
 
         // settings modal pop up
         const settings = document.getElementById('settings');
-        const modal = document.querySelector('.modal');
-        const closeModal = document.querySelector('.bi-x');
+        const report = document.getElementById('report');
+        const modalSettings = document.querySelector('.modal-settings');
+        const closeModalSettings = document.querySelector('.close-settings');
+        const modalReport = document.querySelector('.modal-report');
+        const closeModalReport = document.querySelector('.close-report');
         const layout = document.getElementById('layout');
         const startWithTermToggle = document.getElementById('hs-basic-usage');
         settings.addEventListener('click', () => {
             console.log('settings modal clicked');
 
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            modalSettings.classList.remove('hidden');
+            modalSettings.classList.add('flex');
+        });
+        report.addEventListener('click', () => {
+            console.log('report modal clicked');
+
+            modalReport.classList.remove('hidden');
+            modalReport.classList.add('flex');
         });
 
-        closeModal.addEventListener('click', () => {
+        closeModalSettings.addEventListener('click', () => {
             console.log('close modal clicked');
 
-            modal.classList.remove('flex-row');
-            modal.classList.add('hidden');
+            modalSettings.classList.remove('flex-row');
+            modalSettings.classList.add('hidden');
+
+        });
+        closeModalReport.addEventListener('click', () => {
+            console.log('close modal clicked');
+
+            modalReport.classList.remove('flex-row');
+            modalReport.classList.add('hidden');
 
         });
 
