@@ -74,8 +74,14 @@
     @endif
 
         <!-- idk style these better /-->
-        <div class="arrows flex justify-center items-align text-4xl gap-2 ">
-            <i class="arrow-back bg-gradient-to-br from-[var(--accent)]/50 to-[var(--secondary)]/70
+        <div class="arrows flex items-align text-4xl w-125 mx-auto">
+
+            <div class="flex-1 flex justify-start items-center pb-2">
+                <i class="bi bi-star text-2xl text-[var(--secondary)]/60 font-bold px-4 transition duration-300 ease-in-out hover:scale-105"></i>
+            </div>
+
+            <div class="flex justify-center items-center gap-2 flex-none">
+                <i class="arrow-back bg-gradient-to-br from-[var(--accent)]/50 to-[var(--secondary)]/70
                 text-[#f8f8f8] rounded-xl p-2 bi bi-arrow-left
                 transition duration-300 ease-in-out hover:scale-105 hover:translate-z-1"></i>
                     
@@ -86,14 +92,54 @@
                     <h5 class="num rounded-lg p-2 m-1">1/{{ $set->flashcards->count()}}</h5>
                 </div>
 
-            <i class="arrow-next bg-gradient-to-br from-[var(--accent)]/50 to-[var(--secondary)]/70
-                text-[#f8f8f8] rounded-xl p-2 bi bi-arrow-right
-                transition duration-300 ease-in-out hover:scale-105 hover:translate-z-1"></i>
+                <i class="arrow-next bg-gradient-to-br from-[var(--accent)]/50 to-[var(--secondary)]/70
+                    text-[#f8f8f8] rounded-xl p-2 bi bi-arrow-right
+                    transition duration-300 ease-in-out hover:scale-105 hover:translate-z-1"></i>
+
+            </div>
+
+            <!-- toggle term and def https://preline.co/docs/switch.html/-->
+            <div class="flex-1 flex justify-end items-center">
+                <!--<label for="hs-basic-usage" class="relative inline-block w-11 h-6 cursor-pointer">
+                <input type="checkbox" id="hs-basic-usage" class="peer sr-only">
+                <span class="absolute inset-0 bg-[var(--primary)]/40 rounded-full transition duration-300 ease-in-out peer-checked:bg-[var(--primary)]/70 "></span>
+                <span class="absolute top-1/2 start-0.5 -translate-y-1/2 size-5 bg-white rounded-full shadow-xs transition-transform duration-200 ease-in-out peer-checked:translate-x-full dark:bg-[var(--primary)] dark:peer-checked:bg-[var(--gray)]"></span>
+                </label>/-->
+            </div>
+
         </div>
         <div class="flex justify-end text-xl font-bold text-[var(--primary)] gap-4 mb-10 mr-14">
-            <i class="bi bi-gear transition duration-300 ease-in-out hover:-translate-y-1 cursor-pointer"></i>
+            <i id="settings" class="bi bi-gear transition duration-300 ease-in-out hover:-translate-y-1 cursor-pointer"></i>
             <i id="shuffle" class="shuffle bi bi-shuffle transition duration-300 ease-in-out hover:-translate-y-1 cursor-pointer"></i>
             <i class="bi bi-flag transition duration-300 ease-in-out hover:-translate-y-1 cursor-pointer"></i>
+        </div>
+
+        <!-- modal pop up for settings, i can add other stuff later
+            first do term to def and vice versa
+            then get starred terms only toggle
+            think of a third option
+        /-->
+        <div class="modal hidden z-100 fixed inset-0 items-center justify-center">
+            <div class=" bg-[var(--bg)] w-125 rounded-xl shadow">
+                <div class="flex justify-between p-5">
+                    <h2 class="text-2xl text-[var(--primary)] font-bold">Settings</h2>
+                    <i class="bi bi-x text-3xl text-[var(--primary)] pt-2 hover:text-[var(--accent)] cursor-pointer"></i>
+                </div>
+                <hr class="mx-3 border-[var(--primary)]/20 mb-4"/>
+                <div class="p-5 flex justify-between">
+                    <div class="">
+                        <p class="text-sm text-[var(--primary)]/60 flex items-center ">Toggle from term to definition</p>
+                    </div>
+                    <div class="mb-1">
+                        <!-- toggle term and def https://preline.co/docs/switch.html/-->
+                        <label for="hs-basic-usage" class="relative inline-block w-11 h-6 cursor-pointer">
+                        <input type="checkbox" id="hs-basic-usage" class="peer sr-only">
+                        <span class="absolute inset-0 bg-[var(--primary)]/40 rounded-full transition duration-300 ease-in-out peer-checked:bg-[var(--primary)]/70 "></span>
+                        <span class="absolute top-1/2 start-0.5 -translate-y-1/2 size-5 bg-white rounded-full shadow-xs transition-transform duration-200 ease-in-out peer-checked:translate-x-full dark:bg-[var(--primary)] dark:peer-checked:bg-[var(--gray)]"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
 
 
@@ -109,6 +155,7 @@
         let index = 0;
         let isFlipped = false;
         let canFlip = true;
+        let startWithTerm = true;
 
 
         // getting percentage for the progress bar
@@ -139,8 +186,16 @@
             // disbale the transitions for a moment
             flashcard.style.transition = 'none';
 
-            flashcard.style.transform = 'rotateY(0deg)';
-            isFlipped = false;
+            // if starting with the term
+            if (startWithTerm) {
+                flashcard.style.transform = 'rotateY(0deg)';
+                isFlipped = false;
+            } // start with def
+            else {
+                flashcard.style.transform = 'rotateY(180deg)';
+                isFlipped = true;
+            }
+            
 
             // forces no trnaisiton
             flashcard.getBoundingClientRect();
@@ -307,11 +362,16 @@
                         bookmark.classList.add('bi-bookmark');
                     }
 
-
                 })
                 .catch(err => console.error(err));
             });
         }
+
+        // staring cards for studying later -- not functional, i'll do this later
+        const star = document.querySelector('.star');
+        /*star.addEventListener('click', () => {
+            
+        });*/
 
         // shuffle functions for flashcards
         // do later on eventually,on
@@ -323,15 +383,55 @@
             return cards;
         }
 
-        let shuffle = document.getElementById('shuffle');
+        const shuffle = document.getElementById('shuffle');
         shuffle.addEventListener('click', () => {
             console.log('shuffle');
             flashcards = shuffleCards(flashcards);
             index = 0; // start over
             canFlip = true; // set back to true just in case
+            // set this back too
+            flashcard.classList.add('bg-black/3');
+                flashcard.classList.remove(
+                    'bg-gradient-to-br',
+                    'from-[var(--accent)]/40',
+                    'to-[var(--secondary)]/60'
+                );
             updateProgress(); // set back to start
             changeCards(); // set back also yeah
         });
+
+        // settings modal pop up
+        const settings = document.getElementById('settings');
+        const modal = document.querySelector('.modal');
+        const closeModal = document.querySelector('.bi-x');
+        const layout = document.getElementById('layout');
+        const startWithTermToggle = document.getElementById('hs-basic-usage');
+        settings.addEventListener('click', () => {
+            console.log('settings modal clicked');
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        });
+
+        closeModal.addEventListener('click', () => {
+            console.log('close modal clicked');
+
+            modal.classList.remove('flex-row');
+            modal.classList.add('hidden');
+
+        });
+
+        // click out side of modal to close it 
+
+
+        startWithTermToggle.addEventListener('change', (e) => {
+            console.log('toggle');
+            startWithTerm = e.target.checked;
+            startWithTerm = !startWithTerm;
+            index = 0;
+            updateProgress();
+            changeCards();
+        })
         changeCards();
         
 

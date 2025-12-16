@@ -52,7 +52,7 @@
                 <form
                     action="{{ route('set.destroy', ['studySet' => $set->id]) }}"
                     method="POST"
-                    class="absolute top-4 right-4 z-20 p-2 hover:bg-[var(--accent)]/30 rounded-xl"
+                    class="absolute top-4 right-4 z-20 p-2 hover:bg-[var(--accent)]/30 rounded-xl transition duration-300 ease-in-out "
                     onsubmit="return confirm('Are you sure you want to delete this set?');">
                     @csrf
                     @method('DELETE')
@@ -82,11 +82,11 @@
                         
                         <div class="flex items-center justify-between px-2">
                             <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                <i class="bi bi-layers-fill text-[#d95242]/70"></i>
+                                <i class="bi bi-layers-fill text-[#d95242]/60"></i>
                                 <span class="text-sm font-medium">{{ $set->flashcards->count() }} cards</span>
                             </div>
                             <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                <i class="bi bi-bookmark-check-fill text-[var(--primary)]/80"></i>
+                                <i class="bi bi-book-half text-[var(--primary)]/60"></i>
                                 <span class="text-sm font-medium">{{ $set['num_studies'] }} studies</span>
                             </div>
                             <div class="flex items-center gap-1 text-[var(--primary)]/70">
@@ -173,11 +173,11 @@
                     
                     <div class="flex items-center justify-between px-2">
                         <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                            <i class="bi bi-layers-fill text-[#d95242]/70"></i>
+                            <i class="bi bi-layers-fill text-[#d95242]/60"></i>
                             <span class="text-sm font-medium">{{ $set->flashcards->count() }} cards</span>
                         </div>
                         <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                            <i class="bi bi-book-half text-[var(--primary)]/80"></i>
+                            <i class="bi bi-book-half text-[var(--primary)]/60"></i>
                             <span class="text-sm font-medium">{{ $set['num_studies'] }} studies</span>
                         </div>
                         <div class="flex items-center gap-1 text-[var(--primary)]/70">

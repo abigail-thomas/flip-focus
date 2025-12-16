@@ -91,11 +91,11 @@
                             
                             <div class="flex items-center justify-between px-2">
                                 <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                    <i class="bi bi-layers-fill text-[#d95242]/70"></i>
+                                    <i class="bi bi-layers-fill text-[#d95242]/60"></i>
                                     <span class="text-sm font-medium">{{ $set->flashcards->count() }} cards</span>
                                 </div>
                                 <div class="flex items-center gap-1 text-[var(--primary)]/70">
-                                    <i class="bi bi-book-half text-[var(--primary)]/80"></i>
+                                    <i class="bi bi-book-half text-[var(--primary)]/60"></i>
                                     <span class="text-sm font-medium">{{ $set['num_studies'] }} studies</span> <!-- make this number dynamic /-->
                                 </div>
                                 <div class="flex items-center gap-1 text-[var(--primary)]/70">
